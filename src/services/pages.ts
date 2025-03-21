@@ -1,20 +1,39 @@
-import { Page, PageList, PageQueryParams } from '../types/pages';
-import { GET_PAGES, GET_PAGE_BY_ID } from '../graphql/queries';
-import { graphql } from './graphql';
+import { ConfluencePage, PageSearchResult } from '../types/confluence';
+import { createHttpClient } from '../utils';
 
-export async function getPages({ spaceKey, limit = 25, start = 0 }: PageQueryParams): Promise<PageList> {
-  const response = await graphql.executeQuery<{ space: { pages: PageList } }>(GET_PAGES, {
-    spaceKey,
+export async function getPages(
+  accessToken: string,
+  cloudId: string,
+  spaceKey?: string,
+  limit: number = 25,
+  start: number = 0
+): Promise<PageSearchResult> {
+  const client = createHttpClient(accessToken, cloudId);
+  const params: Record<string, any> = {
     limit,
     start
-  });
+  };
 
-  return response.space.pages;
+  if (spaceKey) {
+    params.spaceKey = spaceKey;
+  }
+
+  const response = await client.get('/wiki/api/v2/pages', { params });
+  return response.data;
 }
 
-export async function getPageById(pageId: string): Promise<Page> {
-  const response = await graphql.executeQuery<{ page: Page }>(GET_PAGE_BY_ID, { pageId });
-  return response.page;
+export async function getPageById(
+  accessToken: string,
+  cloudId: string,
+  pageId: string
+): Promise<ConfluencePage> {
+  const client = createHttpClient(accessToken, cloudId);
+  const response = await client.get(`/wiki/api/v2/pages/${pageId}`, {
+    params: {
+      'body-format': 'storage'
+    },
+  });
+  return response.data;
 }
 
 export default {

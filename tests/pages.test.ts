@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import nock from 'nock';
 import config from '../src/config';
-import { getPages, getPageById } from '../src/services/pages';
+import { getPages, getPageById } from '../src/services';
 
 describe('Pages Service', () => {
   beforeEach(() => {

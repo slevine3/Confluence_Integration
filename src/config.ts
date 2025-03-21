@@ -10,7 +10,8 @@ const env = cleanEnv(process.env, {
   CONFLUENCE_CLIENT_ID: str(),
   CONFLUENCE_CLIENT_SECRET: str(),
   AUTH_TOKEN_URL: str({ default: 'https://auth.atlassian.com/oauth/token' }),
-  GRAPHQL_API_URL: str({ default: 'https://api.atlassian.com/graphql/gateway/api' }),
+  REDIRECT_URI: str(),
+  SESSION_SECRET: str(),
   LOG_LEVEL: str({ choices: ['error', 'warn', 'info', 'debug'], default: 'info' })
 });
 
@@ -23,10 +24,9 @@ export default {
     clientSecret: env.CONFLUENCE_CLIENT_SECRET
   },
   auth: {
-    tokenUrl: env.AUTH_TOKEN_URL
-  },
-  graphql: {
-    apiUrl: env.GRAPHQL_API_URL
+    tokenUrl: env.AUTH_TOKEN_URL,
+    redirectUri: env.REDIRECT_URI,
+    sessionSecret: env.SESSION_SECRET
   },
   logging: {
     level: env.LOG_LEVEL

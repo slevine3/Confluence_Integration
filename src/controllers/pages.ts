@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
-import { getPages as getPagesService, getPageById as getPageByIdService } from '../services/pages';
+import { getPages as getPagesService, getPageById as getPageByIdService, getSpacePages as getSpacePagesService } from '../services';
+import { handleErrorResponse } from '../utils';
 
 export async function getPages(req: Request, res: Response): Promise<void> {
   try {
@@ -10,28 +11,19 @@ export async function getPages(req: Request, res: Response): Promise<void> {
       return;
     }
 
+    if (!req.session.accessToken || !req.session.cloudId) {
+      res.status(401).json({ error: 'Not authenticated' });
+      return;
+    }
+
     const { spaceKey } = req.query;
     const limit = parseInt(req.query.limit as string) || 25;
     const start = parseInt(req.query.start as string) || 0;
 
-    if (!spaceKey) {
-      res.status(400).json({ error: 'spaceKey is required' });
-      return;
-    }
-
-    const pages = await getPagesService({
-      spaceKey: spaceKey as string,
-      limit,
-      start
-    });
-
+    const pages = await getPagesService(req.session.accessToken, req.session.cloudId, spaceKey as string | undefined, limit, start);
     res.json(pages);
-  } catch (error) {
-    console.error('Error fetching pages:', error);
-    res.status(500).json({
-      error: 'Failed to fetch pages',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
+  } catch (error: any) {
+    handleErrorResponse(res, error);
   }
 }
 
@@ -44,13 +36,14 @@ export async function getPageById(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const page = await getPageByIdService(pageId);
+    if (!req.session.accessToken || !req.session.cloudId) {
+      res.status(401).json({ error: 'Not authenticated' });
+      return;
+    }
+
+    const page = await getPageByIdService(req.session.accessToken, req.session.cloudId, pageId);
     res.json(page);
-  } catch (error) {
-    console.error('Error fetching page:', error);
-    res.status(500).json({
-      error: 'Failed to fetch page',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
+  } catch (error: any) {
+    handleErrorResponse(res, error);
   }
-} 
+}
