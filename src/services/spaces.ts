@@ -1,12 +1,12 @@
-import { SpaceSearchResult, PageSearchResult } from '../types/confluence';
 import { createHttpClient } from '../utils';
+import { SpaceList, PageInSpaceList } from '../types';
 
 export async function getSpaces(
   accessToken: string,
   cloudId: string,
   limit: number = 25,
   start: number = 0
-): Promise<SpaceSearchResult> {
+): Promise<SpaceList> {
   const client = createHttpClient(accessToken, cloudId);
   const params: Record<string, any> = {
     limit,
@@ -21,16 +21,10 @@ export async function getSpacePages(
   accessToken: string,
   cloudId: string,
   spaceId: string,
-  limit: number = 25,
-  start: number = 0
-): Promise<PageSearchResult> {
+): Promise<PageInSpaceList> {
   const client = createHttpClient(accessToken, cloudId);
-  const params: Record<string, any> = {
-    limit,
-    start
-  };
 
-  const response = await client.get(`/wiki/api/v2/spaces/${spaceId}/pages`, { params });
+  const response = await client.get(`/wiki/api/v2/spaces/${spaceId}/pages`);
   return response.data;
 }
 

@@ -1,29 +1,24 @@
 import { Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 import { getSpaces as getSpacesService, getSpacePages as getSpacePagesService } from '../services';
 import { handleErrorResponse } from '../utils';
+import { AuthenticatedRequest } from '../types/auth';
+import { Space, SpaceList, SpaceQueryParams, PageInSpaceList } from '../types';
+import { validationResult } from 'express-validator';
 
 export async function getSpaces(req: Request, res: Response): Promise<void> {
   try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      return;
-    }
+    const { accessToken, cloudId } = (req as AuthenticatedRequest).session;
 
-    if (!req.session.accessToken || !req.session.cloudId) {
-      res.status(401).json({ error: 'Not authenticated' });
-      return;
-    }
+    const query: SpaceQueryParams = {
+      limit: parseInt(req.query.limit as string) || 25,
+      start: parseInt(req.query.start as string) || 0
+    };
 
-    const limit = parseInt(req.query.limit as string) || 25;
-    const start = parseInt(req.query.start as string) || 0;
-
-    const spaces = await getSpacesService(
-      req.session.accessToken,
-      req.session.cloudId,
-      limit,
-      start
+    const spaces: SpaceList = await getSpacesService(
+      accessToken,
+      cloudId,
+      query.limit,
+      query.start
     );
     res.json(spaces);
   } catch (error: any) {
@@ -39,26 +34,13 @@ export async function getSpacePages(req: Request, res: Response): Promise<void> 
       return;
     }
 
-    if (!req.session.accessToken || !req.session.cloudId) {
-      res.status(401).json({ error: 'Not authenticated' });
-      return;
-    }
-
     const { spaceId } = req.params;
-    if (!spaceId) {
-      res.status(400).json({ error: 'spaceId is required' });
-      return;
-    }
 
-    const limit = parseInt(req.query.limit as string) || 25;
-    const start = parseInt(req.query.start as string) || 0;
-
-    const pages = await getSpacePagesService(
-      req.session.accessToken,
-      req.session.cloudId,
+    const { accessToken, cloudId } = (req as AuthenticatedRequest).session;
+    const pages: PageInSpaceList = await getSpacePagesService(
+      accessToken,
+      cloudId,
       spaceId,
-      limit,
-      start
     );
     res.json(pages);
   } catch (error: any) {
