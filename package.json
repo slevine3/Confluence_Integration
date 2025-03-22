@@ -7,7 +7,8 @@
     "start": "ts-node src/index.ts",
     "build": "tsc",
     "dev": "nodemon src/index.ts",
-    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "test": "NODE_ENV=test mocha -r ts-node/register -r ./test/setup.ts test/**/*.test.ts",
+    "update-env": "ts-node scripts/update-env-test.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
@@ -30,10 +31,12 @@
     "@types/node": "^20.11.19",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
+    "axios-cookiejar-support": "^5.0.5",
     "chai": "^4.3.10",
     "eslint": "^8.56.0",
     "mocha": "^10.3.0",
     "nodemon": "^3.0.3",
+    "tough-cookie": "^5.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },

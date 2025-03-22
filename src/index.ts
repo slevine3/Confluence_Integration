@@ -5,7 +5,8 @@ import authRoutes from './routes/authRouter';
 import { ensureAuthenticated } from './middleware/ensureAuthenticated';
 import session from 'express-session';
 import spacesRoutes from './routes/spaces';
-const app = express();
+
+export const app = express();
 
 app.use(session({
   secret: config.auth.sessionSecret,
@@ -22,6 +23,15 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Test session initialization
+if (process.env.NODE_ENV === 'test') {
+  app.get('/test/login', (req, res) => {
+    req.session.accessToken = process.env.TEST_ACCESS_TOKEN!;
+    req.session.cloudId = process.env.TEST_CLOUD_ID!;
+    res.json({ message: 'Test session initialized ✅' });
+  });
+}
+
 // Routes
 app.use('/oauth', authRoutes);
 app.use('/api/spaces', ensureAuthenticated, spacesRoutes);
@@ -36,7 +46,9 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
   });
 });
 
-// Start server
-app.listen(config.port, () => {
-  console.log(`Server is running on port ${config.port}`);
-}); 
+// Only start the server if we're not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(config.port, () => {
+    console.log(`Server is running on port ${config.port}`);
+  });
+} 

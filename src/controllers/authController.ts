@@ -26,8 +26,6 @@ export const handleAuthCallback = async (req: Request, res: Response) => {
 
   req.session.accessToken = tokens.access_token;
   req.session.cloudId = cloudResources[0].id;
-  // req.session.refreshToken = tokens.refresh_token;
-  // TODO: store access_token, refresh_token, cloudId per user (DB/session)
 
   res.json({
     tokens,
