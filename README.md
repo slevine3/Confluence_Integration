@@ -26,7 +26,7 @@ Below is the screenshot of the app configuration from developer.atlassian.com:
 ![Atlassian App Configuration](docs/images/MyApps.png)
 ![Atlassian App Configuration](docs/images/Authorization.png)
 ![Atlassian App Configuration](docs/images/Overview.png)
-![Atlassian App Configuration](docs/images/Permission.png)
+![Atlassian App Configuration](docs/images/Permissions.png)
 
 ---
 
