@@ -29,4 +29,7 @@ Thumbs.db
 # Test coverage
 coverage/
 
-docs/
+# Docs
+docs/*
+!docs/images/
+!docs/images/*.png

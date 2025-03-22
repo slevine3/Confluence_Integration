@@ -8,7 +8,6 @@ export interface TestContext {
 }
 
 export const setupTestClient = async (baseUrl: string): Promise<TestContext> => {
-  // Create a cookie jar and axios instance that supports cookies
   const cookieJar = new CookieJar();
   const axiosInstance = axios.create({
     jar: cookieJar,
@@ -16,7 +15,6 @@ export const setupTestClient = async (baseUrl: string): Promise<TestContext> => 
   });
   axiosCookieJarSupport(axiosInstance);
 
-  // Set up session
   const response = await axiosInstance.get(`${baseUrl}/test/login`);
   console.log('Test session response:', response.data);
 
