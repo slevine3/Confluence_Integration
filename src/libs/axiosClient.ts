@@ -18,7 +18,7 @@ export async function axiosRequest<T = any>(options: RequestOptions): Promise<T>
       headers: options.headers,
       params: options.params,
       data: options.data,
-      timeout: options.timeout || 10000, // optional timeout
+      timeout: options.timeout || 10000,
     });
 
     return response.data;

@@ -1,9 +1,8 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
-import config from '../config';
 
-export const createHttpClient = (accessToken: string, cloudId: string) => {
+export const createHttpClient = (baseUrl: string, accessToken: string, cloudId: string) => {
   const client = axios.create({
-    baseURL: `https://api.atlassian.com/ex/confluence/${cloudId}`,
+    baseURL: `${baseUrl}/${cloudId}`,
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json',

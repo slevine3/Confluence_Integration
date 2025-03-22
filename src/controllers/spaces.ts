@@ -12,7 +12,7 @@ export async function getSpaces(req: Request, res: Response): Promise<void> {
       accessToken,
       cloudId,
     );
-    res.json(spaces);
+    res.status(200).json(spaces);
     return;
   } catch (error: any) {
     handleErrorResponse(res, error);
@@ -24,8 +24,8 @@ export async function getSpacePages(req: Request, res: Response): Promise<void> 
     const { spaceId } = req.params;
     const { accessToken, cloudId } = (req as AuthenticatedRequest).session;
     const pages: PageInSpaceList = await getSpacePagesService(accessToken, cloudId, spaceId);
-    
-    res.json(pages);
+
+    res.status(200).json(pages);
     return;
   } catch (error: any) {
     handleErrorResponse(res, error);
