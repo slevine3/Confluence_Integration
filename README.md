@@ -19,6 +19,15 @@ A Node.js + TypeScript server that integrates with Confluence Cloud using the RE
 - Confluence Cloud instance with API access
 - Atlassian OAuth 2.0 credentials (Client ID and Secret)
 
+## Atlassian App Configuration
+
+Below is the screenshot of the app configuration from developer.atlassian.com:
+
+![Atlassian App Configuration](docs/images/MyApps.png)
+![Atlassian App Configuration](docs/images/Authorization.png)
+![Atlassian App Configuration](docs/images/Overview.png)
+![Atlassian App Configuration](docs/images/Permission.png)
+
 ---
 
 ## Setup

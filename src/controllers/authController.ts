@@ -16,19 +16,24 @@ export const redirectToAtlassian = (req: Request, res: Response) => {
   res.redirect(authUrl);
 };
 
-export const handleAuthCallback = async (req: Request, res: Response) => {
-  const { code } = req.query;
+export const handleAuthCallback = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { code } = req.query;
 
-  if (!code) return res.status(400).send('Missing code');
+    if (!code || typeof code !== 'string') {
+      res.status(400).json({ message: 'Missing or invalid code parameter' });
+      return;
+    }
 
-  const tokens = await getAccessToken(code as string);
-  const cloudResources = await getCloudId(tokens.access_token);
+    const tokens = await getAccessToken(code);
+    const cloudResources = await getCloudId(tokens.access_token);
 
-  req.session.accessToken = tokens.access_token;
-  req.session.cloudId = cloudResources[0].id;
+    req.session.accessToken = tokens.access_token;
+    req.session.cloudId = cloudResources[0].id;
 
-  res.json({
-    tokens,
-    cloudResources,
-  });
+    res.json({ tokens, cloudResources });
+  } catch (error: any) {
+    console.error('OAuth callback error:', error.message);
+    res.status(500).json({ message: 'Failed to complete OAuth flow', error: error.message });
+  }
 };

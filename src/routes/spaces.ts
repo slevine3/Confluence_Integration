@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import * as spacesController from '../controllers/spaces';
 import { param } from 'express-validator';
+import { validateRequest } from '../middleware';
+
 const router = Router();
 
 router.get(
@@ -12,6 +14,7 @@ router.get(
   [
     param('spaceId').isString().notEmpty().withMessage('spaceId is required'),
   ],
+  validateRequest,
   spacesController.getSpacePages
 );
 

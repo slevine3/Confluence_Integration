@@ -2,7 +2,7 @@ import express from 'express';
 import config from './config';
 import pagesRoutes from './routes/pages';
 import authRoutes from './routes/authRouter';
-import { ensureAuthenticated } from './middleware/ensureAuthenticated';
+import { ensureAuthenticated } from './middleware/';
 import session from 'express-session';
 import spacesRoutes from './routes/spaces';
 
@@ -13,7 +13,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // set to true in production with HTTPS
+    secure: false,
     httpOnly: true,
     sameSite: 'lax',
   },
@@ -34,12 +34,12 @@ if (process.env.NODE_ENV === 'test') {
 
 // Routes
 app.use('/oauth', authRoutes);
-app.use('/api/spaces', ensureAuthenticated, spacesRoutes);
 app.use('/api/pages', ensureAuthenticated, pagesRoutes);
+app.use('/api/spaces', ensureAuthenticated, spacesRoutes);
 
 // Error handling
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // console.error(err.stack);
+  console.error(err.stack);
   res.status(500).json({
     error: 'Internal Server Error',
     message: err.message

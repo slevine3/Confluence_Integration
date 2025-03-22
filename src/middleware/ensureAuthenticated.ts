@@ -1,16 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from '../types/auth'; // adjust path as needed
+import { AuthenticatedRequest } from '../types/auth';
 
-declare module 'express-session' {
-  interface Session {
-    accessToken?: string;
-    cloudId?: string;
-  }
-}
-
-/**
- * Middleware that asserts req is AuthenticatedRequest if session has required values
- */
 export function ensureAuthenticated(
   req: Request,
   res: Response,

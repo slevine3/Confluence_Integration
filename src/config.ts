@@ -10,6 +10,7 @@ const env = cleanEnv(process.env, {
   CONFLUENCE_CLIENT_ID: str(),
   CONFLUENCE_CLIENT_SECRET: str(),
   AUTH_TOKEN_URL: str({ default: 'https://auth.atlassian.com/oauth/token' }),
+  AUTH_RESOURCES_URL: str({ default: 'https://api.atlassian.com/oauth/token/accessible-resources' }),
   REDIRECT_URI: str(),
   SESSION_SECRET: str(),
   LOG_LEVEL: str({ choices: ['error', 'warn', 'info', 'debug'], default: 'info' })
@@ -25,6 +26,7 @@ export default {
   },
   auth: {
     tokenUrl: env.AUTH_TOKEN_URL,
+    resourcesUrl: env.AUTH_RESOURCES_URL,
     redirectUri: env.REDIRECT_URI,
     sessionSecret: env.SESSION_SECRET
   },

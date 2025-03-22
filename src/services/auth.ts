@@ -2,7 +2,7 @@ import axios from 'axios';
 import config from '../config';
 
 export async function getAccessToken(code: string) {
-  const res = await axios.post('https://auth.atlassian.com/oauth/token', {
+  const res = await axios.post(config.auth.tokenUrl, {
     grant_type: 'authorization_code',
     client_id: config.confluence.clientId,
     client_secret: config.confluence.clientSecret,
@@ -14,7 +14,7 @@ export async function getAccessToken(code: string) {
 }
 
 export async function getCloudId(accessToken: string) {
-  const res = await axios.get('https://api.atlassian.com/oauth/token/accessible-resources', {
+  const res = await axios.get(config.auth.resourcesUrl, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

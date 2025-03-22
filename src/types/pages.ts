@@ -1,7 +1,4 @@
-/**
- * Represents a page's version information
- */
-export interface PageVersion {
+interface PageVersion {
   number: number;
   message: string;
   createdAt: string;
@@ -9,19 +6,13 @@ export interface PageVersion {
   authorId?: string;
 }
 
-/**
- * Represents a page's body content
- */
-export interface PageBody {
+interface PageBody {
   storage?: {
     value: string;
     representation: string;
   };
 }
 
-/**
- * Represents a page
- */
 export interface Page {
   id: string;
   title: string;
@@ -44,9 +35,6 @@ export interface Page {
   sourceTemplateEntityId?: string;
 }
 
-/**
- * Represents a list of pages with pagination information
- */
 export interface PageList {
   results: Page[];
   limit?: number;

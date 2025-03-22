@@ -1,17 +1,11 @@
-/**
- * Represents a space icon
- */
-export interface SpaceIcon {
+interface SpaceIcon {
   path?: string;
   width?: number;
   height?: number;
   isDefault?: boolean;
 }
 
-/**
- * Represents a space description
- */
-export interface SpaceDescription {
+interface SpaceDescription {
   plain?: {
     value: string;
     representation: string;
@@ -22,10 +16,7 @@ export interface SpaceDescription {
   };
 }
 
-/**
- * Represents a space
- */
-export interface Space {
+interface Space {
   id: string;
   key: string;
   name: string;
@@ -42,9 +33,6 @@ export interface Space {
   description?: SpaceDescription;
 }
 
-/**
- * Represents a list of spaces
- */
 export interface SpaceList {
   results: Space[];
   _links: {
@@ -52,21 +40,6 @@ export interface SpaceList {
   };
 }
 
-/**
- * Parameters for querying spaces
- */
-export interface SpaceQueryParams {
-  ids?: string[];
-  keys?: string[];
-  type?: 'global' | 'personal';
-  status?: string;
-  limit?: number;
-  start?: number;
-}
-
-/**
- * Represents a page within a space context
- */
 export interface PageInSpace {
   id: string;
   title: string;
@@ -95,9 +68,6 @@ export interface PageInSpace {
   sourceTemplateEntityId?: string;
 }
 
-/**
- * Represents a list of pages within a space context
- */
 export interface PageInSpaceList {
   results: PageInSpace[];
   _links: {
